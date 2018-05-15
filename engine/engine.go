@@ -15,7 +15,7 @@ func Run(seeds ...Request) {
 		r := requests[0]
 		requests = requests[1:]
 
-		//fmt.Println(r.Url)
+		log.Println("Fetching Url: ", r.Url)
 		body, err := fetcher.Fetch(r.Url)
 		if err != nil {
 			log.Printf("Fetcher error "+
@@ -24,5 +24,9 @@ func Run(seeds ...Request) {
 		}
 		ParseResult := r.ParserFunc(body)
 		requests = append(requests, ParseResult.Requests...)
+
+		for _, item := range ParseResult.Items {
+			log.Printf("Got Item %v", item)
+		}
 	}
 }
