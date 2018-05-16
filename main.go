@@ -2,13 +2,13 @@ package main
 
 import (
 	"distributed-spider/engine"
-	"distributed-spider/zhenai/parser"
 	"distributed-spider/scheduler"
+	"distributed-spider/zhenai/parser"
 )
 
 func main() {
 	e := engine.ConcurrentEngine{
-		Scheduler:   &scheduler.SimpleScheduler{},
+		Scheduler:   &scheduler.QueuedScheduler{},
 		WorkerCount: 100,
 	}
 	e.Run(engine.Request{
