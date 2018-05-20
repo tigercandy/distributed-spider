@@ -1,14 +1,12 @@
 package engine
 
 import (
-	"distributed-spider/model"
 	"log"
 )
 
 type ConcurrentEngine struct {
 	Scheduler   Scheduler
 	WorkerCount int
-	ItemChan    chan interface{}
 }
 
 type Scheduler interface {
@@ -39,14 +37,13 @@ func (e *ConcurrentEngine) Run(seeds ...Request) {
 		e.Scheduler.Submit(r)
 	}
 
-	profileCount := 0
+	itemCount := 0
 	for {
 		result := <-out
+
 		for _, item := range result.Items {
-			if _, ok := item.(model.Profile); ok {
-				log.Printf("Get profile #%d: %v", profileCount, item)
-				profileCount++
-			}
+			log.Printf("Get item #%d: %v", itemCount, item)
+			itemCount++
 		}
 		for _, request := range result.Requests {
 			if IsDuplicate(request.Url) {
